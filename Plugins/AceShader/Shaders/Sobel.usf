@@ -1,0 +1,55 @@
+﻿#pragma once
+
+min10float Luminance(min10float4 Color)
+{
+	return 0.2125 * Color.r + 0.7154 * Color.g + 0.0721 * Color.b;
+}
+float4 SobelEdgeDected(in Texture2D Tex, in float2 UV, in float2 SceneTexelSize)
+{
+	
+	float2 NewCoord[9] {0.};
+	for (half index = 0.; index < 9.; ++index)
+	{
+		NewCoord[index] = UV + (SceneTexelSize * CoordOffsets[index]);
+	}
+
+	const half Gx[9] = {-1, -2, -1, 0, 0, 0, 1, 2, 1};
+	const half Gy[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
+	
+
+	
+	half TextureSampleValue{0};
+	half EdgeX {0};
+	half EdgeY {0};
+	
+	for (half index = 0.; index < 9.; ++index)
+	{
+		TextureSampleValue = Luminance(Tex.Sample(SamplerTex, NewCoord[index]));
+		EdgeX += TextureSampleValue * Gx[index];
+		EdgeY += TextureSampleValue * Gy[index];
+	}
+	const half Edge = 1 - abs(EdgeX) - abs(EdgeY);
+
+	return Edge;	
+}
+
+half2 TexelSize;
+
+void Main_VS(in float2 Position : SV_Position, inout float2 Coords[9] : TEXCOORD0)
+{
+	const half2 CoordOffsets[9] = {
+		(-1., -1.),
+		(0. , -1.),
+		(1. , -1.),
+		(-1., 0.),
+		(0. , 0.),
+		(1. , 0.),
+		(-1., 1.),
+		(0. , 1.),
+		(1. , 1.)
+	};
+	for (half Index = 0.; Index < 9; ++Index)
+	{
+		Coords[Index] = Coords[Index] + CoordOffsets[Index] * TexelSize;
+	}
+}

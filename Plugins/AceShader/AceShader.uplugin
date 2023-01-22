@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "AceShader",
+	"Description": "My Custom Shader",
+	"Category": "Other",
+	"CreatedBy": "AceBilly",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": true,
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "AceShader",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
